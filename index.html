@@ -1,0 +1,286 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>燒肉無双 </title>
+    <style type="text/css">
+        /* --- 基礎設定 --- */
+        body {
+            background-color: #0f0f0f; /* 更深的背景，模擬餐廳昏暗的高質感 */
+            color: #d1d1d1;
+            margin: 0;
+            padding: 0;
+            font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* --- 報告亮點 1: 載入動畫 (Preloader) --- */
+        #loader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #1a1a1a;
+            display: flex; justify-content: center; align-items: center;
+            z-index: 9999;
+            transition: opacity 1s ease;
+        }
+        .loader-content {
+            text-align: center;
+            color: #c9a063;
+            font-size: 24px;
+            letter-spacing: 10px;
+            border-bottom: 2px solid #c9a063;
+            padding-bottom: 10px;
+            animation: 開頭動畫 2s infinite;
+        }
+        @keyframes 開頭動畫 {
+            0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; }
+        }
+
+        /* --- 頁首設計 --- */
+        #header-logo {
+            text-decoration: none; 
+            font-size: 70px; 
+            color: #c9a063;
+            display: block;
+            padding: 60px 0 30px 60px;
+            font-weight: 900;
+            letter-spacing: 8px;
+            transition: 0.5s;
+            cursor: pointer;
+        }
+        #header-logo:hover {
+            color: #fff;
+            text-shadow: 0 0 20px rgba(201, 160, 99, 0.8);
+            transform: translateX(10px); /* 滑鼠移上去微動，增加靈動感 */
+        }
+
+        /* --- 報告亮點 2: 現代化導覽列 (Sticky Navigation) --- */
+        #menu {
+            background: rgba(38, 38, 38, 0.95); /* 半透明磨砂質感 */
+            width: 100%;
+            height: 65px;
+            border-bottom: 2px solid #c9a063;
+            padding-left: 60px;
+            box-sizing: border-box;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px); /* 模糊背景，蘋果官網常見技術 */
+        }
+
+        #menu ul { list-style: none; margin: 0; padding: 0; }
+        #menu ul li { float: left; position: relative; }
+        #menu ul li a {
+            display: block; height: 65px; width: 200px;
+            text-align: center; line-height: 65px;
+            color: #fff; text-decoration: none;
+            font-size: 17px; font-weight: bold; transition: 0.3s;
+        }
+        #menu ul li a:hover { color: #c9a063; background: rgba(255,255,255,0.05); }
+
+        /* 下拉選單 */
+        #menu ul li ul {
+            position: absolute; top: 65px; left: 0; width: 200px;
+            background: #262626; visibility: hidden; opacity: 0;
+            transform: translateY(10px); transition: 0.3s;
+            border-bottom: 3px solid #c9a063;
+        }
+        #menu ul li:hover ul { visibility: visible; opacity: 1; transform: translateY(0); }
+        #menu ul li ul li { float: none; }
+        #menu ul li ul li a { height: 50px; line-height: 50px; border-bottom: 1px solid #333; }
+
+        /* --- 報告亮點 3: 動態內容區塊 --- */
+        #content-display-area {
+            max-width: 1100px;
+            margin: 50px auto;
+            background: #1a1a1a;
+            padding: 60px;
+            border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+        }
+
+        /* 滑入動畫效果 */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .fade-in.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .content-block h1 {
+            color: #c9a063;
+            font-size: 36px;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+        }
+        .content-block h1::after {
+            content: ""; flex: 1; height: 1px; background: #333; margin-left: 20px;
+        }
+
+        /* 圖片放大鏡與燈箱 */
+        .zoomable-img {
+            max-width: 100%; height: auto; border-radius: 5px;
+            margin-top: 25px; border: 1px solid #333;
+            cursor: zoom-in; transition: 0.4s;
+        }
+        .zoomable-img:hover { filter: brightness(1.1); transform: scale(1.02); }
+
+        #lightbox-overlay {
+            display: none; position: fixed; z-index: 10000;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); justify-content: center; align-items: center;
+        }
+        #lightbox-overlay img { max-width: 90%; max-height: 90%; border: 2px solid #c9a063; }
+
+        .social-btn {
+            display: inline-block; padding: 12px 25px; border: 1px solid #c9a063;
+            color: #c9a063; text-decoration: none; border-radius: 2px;
+            margin-right: 15px; transition: 0.3s; font-weight: bold;
+        }
+        .social-btn:hover { background: #c9a063; color: #000; }
+    </style>
+</head>
+
+<body>
+
+    <div id="loader"><div class="loader-content">燒肉無双</div></div>
+
+    <div id="lightbox-overlay" onclick="this.style.display='none'">
+        <img id="lightbox-img" src="" />
+    </div>
+
+    <a href="#" id="header-logo">燒肉無双</a>
+
+    <div id="menu">
+        <ul>
+            <li><a href="#">關於品牌</a>
+                <ul>
+                    <li><a href="#" class="menu-tab" data-content-id="intro-content">品牌故事</a></li> 
+                    <li><a href="#" class="menu-tab" data-content-id="store-content">門市資訊</a></li>
+                </ul>
+            </li>
+            <li><a href="#">菜單鑑賞</a>
+                <ul>
+                    <li><a href="#" class="menu-tab" data-content-id="set-menu">精選套餐</a></li>
+                    <li><a href="#" class="menu-tab" data-content-id="a-la-carte">頂級單點</a></li>
+                </ul>
+            </li>
+            <li><a href="https://inline.app/booking/-NC-GNc1JbAI2MdSR-DG:inline-live-1/-NC-GNoCkXHQKqChLxZE?language=zh-tw" target="_blank" style="background:#c9a063; color:#000;">立即訂位</a></li>
+        </ul>
+    </div>
+
+    <div id="content-display-area">
+        <div id="default-content" class="content-block fade-in active">
+            <h1>WELCOME</h1>
+            <h2 style="font-size: 30px; color: #fff;">究極肉質，無双境界</h2>
+            <p>在這裡，每一片肉品都承載著職人的堅持。<br />從旬味前菜到精緻甜品，每一步皆是極致的考究。</p>
+            <img src="images/13.jpg.avif" class="zoomable-img" />
+        </div>
+
+        <div id="intro-content" class="content-block fade-in" style="display: none;">
+            <h1>BRAND STORY</h1>
+            <h2><strong>「純粹，即是無双。」</strong></h2>
+            <p>我們追求的不只是飽足，而是一種靈魂的共鳴。嚴選日本和牛與極黑和牛，搭配秘製鹽醬，讓您品嚐到食材最原始的甘甜。</p>
+            <p>追蹤社群接收最新優惠活動🆕</p>
+            <div style="margin: 30px 0;">
+                <a href="https://www.facebook.com/yakinikumusou/?locale=zh_TW" class="social-btn">FACEBOOK</a>
+                <a href="https://www.instagram.com/yakiniku_musou/" class="social-btn">INSTAGRAM</a>
+            </div>
+            <img src="images/17.jpg.jpg" class="zoomable-img" />
+        </div>
+
+        <div id="store-content" class="content-block fade-in" style="display: none;">
+            <h1>LOCATION</h1>
+            <h2>📍 高雄市鳥松區本館路1號2樓</h2>
+            <a href="https://maps.app.goo.gl/ET9LKzER66HGcgcbA" target="_blank" style="background:#c9a063; color:#000;">Google Map</a>
+            <h2>🚗 停車場於本館一樓</h2>
+            <img src="images/16.jpg.png" class="zoomable-img" />
+        </div>
+
+        <div id="set-menu" class="content-block fade-in" style="display: none;">
+            <h1>SET MENU</h1>
+            <h1>🍴 午間套餐 🍴</h1>
+            <p>午間套餐提供時間為平日一到五上午11:30~下午16:00</p>
+            <img src="images/1.jpg.avif" class="zoomable-img" />
+            <img src="images/22.jpg.avif" class="zoomable-img" />
+            <h1>🍴 雙人/三人套餐 🍴</h1>
+            <img src="images/3.jpg.avif" class="zoomable-img" />
+            <img src="images/4.jpg.avif" class="zoomable-img" />
+            <img src="images/5.jpg.avif" class="zoomable-img" />
+            <img src="images/6.jpg.avif" class="zoomable-img" />
+        </div>
+        <div id="a-la-carte" class="content-block fade-in" style="display: none;">
+            <h1>SINGLE POINT</h1>
+            <h1>酒水</h1>
+            <img src="images/7.jpg.avif" class="zoomable-img" />
+            <h1>牛肉</h1>
+            <img src="images/8.jpg.avif" class="zoomable-img" />
+            <img src="images/9.jpg.avif" class="zoomable-img" />
+            <h1>其他</h1>
+            <img src="images/10.jpg.avif" class="zoomable-img" />
+            <h1>米食&小品</h1>
+            <img src="images/11.jpg.avif" class="zoomable-img" />
+            <h1>飲品&甜點</h1>
+            <img src="images/12.jpg.avif" class="zoomable-img" />
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        // 載入動畫控制器
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(() => document.getElementById('loader').style.display = 'none', 1000);
+            }, 1000);
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabLinks = document.querySelectorAll('.menu-tab');
+            const contentBlocks = document.querySelectorAll('.content-block');
+            const headerLogo = document.getElementById('header-logo');
+
+            // 內容切換與動畫
+            function showContent(id) {
+                contentBlocks.forEach(block => {
+                    block.style.display = 'none';
+                    block.classList.remove('active');
+                });
+                const target = document.getElementById(id);
+                target.style.display = 'block';
+                // 使用 setTimeout 確保 display: block 先生效，動畫才會有感
+                setTimeout(() => target.classList.add('active'), 50);
+            }
+
+            tabLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showContent(this.getAttribute('data-content-id'));
+                    window.scrollTo({ top: 400, behavior: 'smooth' });
+                });
+            });
+
+            headerLogo.addEventListener('click', function(e) {
+                e.preventDefault();
+                showContent('default-content');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // 圖片放大功能
+            const images = document.querySelectorAll('.zoomable-img');
+            const lb = document.getElementById('lightbox-overlay');
+            const lbImg = document.getElementById('lightbox-img');
+
+            images.forEach(img => {
+                img.addEventListener('click', function() {
+                    lbImg.src = this.src;
+                    lb.style.display = 'flex';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
